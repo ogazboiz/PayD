@@ -3,6 +3,7 @@ import cors from 'cors';
 import { config } from './config/env';
 import searchRoutes from './routes/searchRoutes';
 import paymentRoutes from './routes/paymentRoutes';
+import authRoutes from './routes/authRoutes';
 
 import { HealthController } from './controllers/healthController';
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/payments', paymentRoutes);
 
