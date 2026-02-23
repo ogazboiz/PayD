@@ -191,8 +191,9 @@ export const WalletQRCode: React.FC<WalletQRCodeProps> = ({
                 <span className="font-semibold text-text">{item.title}</span>
                 <ChevronDown
                   size={16}
-                  className={`ml-auto transition-transform ${expandedStep === item.step ? "rotate-180" : ""
-                    }`}
+                  className={`ml-auto transition-transform ${
+                    expandedStep === item.step ? "rotate-180" : ""
+                  }`}
                 />
               </button>
               {expandedStep === item.step && (
