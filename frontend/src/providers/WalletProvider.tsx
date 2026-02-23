@@ -7,6 +7,7 @@ import {
   LobstrModule,
 } from "@creit.tech/stellar-wallets-kit";
 import { useTranslation } from "react-i18next";
+import { useNotification } from "./NotificationProvider";
 
 interface WalletContextType {
   address: string | null;
@@ -27,6 +28,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isConnecting, setIsConnecting] = useState(false);
   const kitRef = useRef<StellarWalletsKit | null>(null);
   const { t } = useTranslation();
+  const { notify, notifySuccess, notifyError } = useNotification();
 
   useEffect(() => {
     const newKit = new StellarWalletsKit({
@@ -50,16 +52,9 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
         modalTitle: t("wallet.modalTitle"),
         onWalletSelected: (option) => {
           void (async () => {
-            try {
-              kit.setWallet(option.id);
-              const { address } = await kit.getAddress();
-              setAddress(address);
-              setWalletName(option.name);
-            } catch (error) {
-              console.error("Failed to get wallet address:", error);
-            } finally {
-              setIsConnecting(false);
-            }
+            const { address } = await kit.getAddress();
+            setAddress(address);
+            notifySuccess("Wallet connected", `${address.slice(0, 6)}...${address.slice(-4)} via ${option.id}`);
           })();
         },
         onClosed: () => {
@@ -68,27 +63,13 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
       });
     } catch (error) {
       console.error("Failed to connect wallet:", error);
-      setIsConnecting(false);
+      notifyError("Wallet connection failed", error instanceof Error ? error.message : "Please try again.");
     }
   };
 
   const disconnect = () => {
     setAddress(null);
-    setWalletName(null);
-  };
-
-  const signTransaction = async (xdr: string): Promise<string> => {
-    const kit = kitRef.current;
-    if (!kit || !address) {
-      throw new Error("Wallet not connected");
-    }
-
-    const { signedTxXdr } = await kit.signTransaction(xdr, {
-      address,
-      networkPassphrase: WalletNetwork.TESTNET,
-    });
-
-    return signedTxXdr;
+    notify("Wallet disconnected");
   };
 
   return (
