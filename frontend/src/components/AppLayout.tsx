@@ -14,9 +14,18 @@ const AppLayout: React.FC = () => {
   const location = useLocation();
 
   return (
-    <div className="flex flex-col min-h-screen" style={{ background: "var(--bg)", color: "var(--text)" }}>
+    <div
+      className="flex flex-col min-h-screen"
+      style={{ background: "var(--bg)", color: "var(--text)" }}
+    >
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 h-(--header-h) items-center px-16 flex justify-between backdrop-blur-[20px] backdrop-saturate-180 border-b" style={{ background: "color-mix(in srgb, var(--bg) 85%, transparent)", borderColor: "var(--border-hi)" }}>
+      <header
+        className="fixed top-0 left-0 right-0 z-50 h-(--header-h) items-center px-16 flex justify-between backdrop-blur-[20px] backdrop-saturate-180 border-b"
+        style={{
+          background: "color-mix(in srgb, var(--bg) 85%, transparent)",
+          borderColor: "var(--border-hi)",
+        }}
+      >
         {/* Logo */}
         <NavLink className="flex items-center gap-2.5" to="/">
           <div className="w-8 h-8 rounded-lg grid place-items-center font-extrabold text-black text-sm tracking-tight shadow-[0_0_20px_rgba(74,240,184,0.3)] bg-linear-to-br from-(--accent) to-(--accent2)">
@@ -53,7 +62,10 @@ const AppLayout: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="flex flex-wrap justify-between items-center gap-2 px-6 py-5 border-t text-xs font-mono text-(--muted)" style={{ borderColor: "var(--border-hi)" }}>
+      <footer
+        className="flex flex-wrap justify-between items-center gap-2 px-6 py-5 border-t text-xs font-mono text-(--muted)"
+        style={{ borderColor: "var(--border-hi)" }}
+      >
         <span>
           © {new Date().getFullYear()} PayD — Licensed under the{" "}
           <a

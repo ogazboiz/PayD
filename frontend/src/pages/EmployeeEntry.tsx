@@ -133,12 +133,15 @@ export default function EmployeeEntry() {
 
     notifySuccess(
       `${submitData.fullName} added successfully!`,
-      generatedWallet ? "A new Stellar wallet was generated for this employee." : undefined,
+      generatedWallet
+        ? "A new Stellar wallet was generated for this employee."
+        : undefined,
     );
 
     setNotification({
-      message: `Employee ${submitData.fullName} added successfully! ${generatedWallet ? "A wallet was created for them." : ""
-        }`,
+      message: `Employee ${submitData.fullName} added successfully! ${
+        generatedWallet ? "A wallet was created for them." : ""
+      }`,
       secretKey: generatedWallet?.secretKey,
       walletAddress: submitData.walletAddress,
       employeeName: submitData.fullName,
@@ -148,7 +151,11 @@ export default function EmployeeEntry() {
   if (isAdding) {
     return (
       <div
-        style={{ maxWidth: notification?.walletAddress ? "800px" : "600px", margin: "2rem auto", padding: "0 1rem" }}
+        style={{
+          maxWidth: notification?.walletAddress ? "800px" : "600px",
+          margin: "2rem auto",
+          padding: "0 1rem",
+        }}
       >
         <div
           style={{

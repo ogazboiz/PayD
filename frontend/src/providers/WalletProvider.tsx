@@ -23,11 +23,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const newKit = new StellarWalletsKit({
       network: WalletNetwork.TESTNET,
-      modules: [
-        new FreighterModule(),
-        new xBullModule(),
-        new LobstrModule(),
-      ],
+      modules: [new FreighterModule(), new xBullModule(), new LobstrModule()],
     });
     kitRef.current = newKit;
   }, []);
@@ -45,7 +41,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
             const { address } = await kit.getAddress();
             setAddress(address);
             setWalletName(option.id);
-            notifySuccess("Wallet connected", `${address.slice(0, 6)}...${address.slice(-4)} via ${option.id}`);
+            notifySuccess(
+              "Wallet connected",
+              `${address.slice(0, 6)}...${address.slice(-4)} via ${option.id}`,
+            );
           })();
         },
         onClosed: () => {
@@ -54,7 +53,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
       });
     } catch (error) {
       console.error("Failed to connect wallet:", error);
-      notifyError("Wallet connection failed", error instanceof Error ? error.message : "Please try again.");
+      notifyError(
+        "Wallet connection failed",
+        error instanceof Error ? error.message : "Please try again.",
+      );
     }
   };
 
@@ -86,4 +88,3 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
     </WalletContext>
   );
 };
-

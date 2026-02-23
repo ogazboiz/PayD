@@ -2,14 +2,7 @@ import React, { useState } from "react";
 // @ts-expect-error - qrcode.react missing type definitions
 import { QRCodeSVG } from "qrcode.react";
 import { Button } from "@stellar/design-system";
-import {
-  Copy,
-  Key,
-  Eye,
-  BookOpen,
-  ChevronDown,
-  Coins
-} from "lucide-react";
+import { Copy, Key, Eye, BookOpen, ChevronDown, Coins } from "lucide-react";
 import { useNotification } from "../hooks/useNotification";
 
 interface WalletQRCodeProps {
@@ -124,7 +117,9 @@ export const WalletQRCode: React.FC<WalletQRCodeProps> = ({
             <Button
               variant="tertiary"
               size="md"
-              onClick={() => void copyToClipboard(walletAddress, "Wallet address")}
+              onClick={() =>
+                void copyToClipboard(walletAddress, "Wallet address")
+              }
             >
               <Copy size={16} className="mr-2" />
               Copy Address
@@ -145,7 +140,9 @@ export const WalletQRCode: React.FC<WalletQRCodeProps> = ({
                       <Button
                         variant="tertiary"
                         size="sm"
-                        onClick={() => void copyToClipboard(secretKey, "Secret key")}
+                        onClick={() =>
+                          void copyToClipboard(secretKey, "Secret key")
+                        }
                       >
                         <Copy size={16} className="mr-2" />
                         Copy Secret Key
@@ -195,8 +192,9 @@ export const WalletQRCode: React.FC<WalletQRCodeProps> = ({
                 <span className="font-semibold text-text">{item.title}</span>
                 <ChevronDown
                   size={16}
-                  className={`ml-auto transition-transform ${expandedStep === item.step ? "rotate-180" : ""
-                    }`}
+                  className={`ml-auto transition-transform ${
+                    expandedStep === item.step ? "rotate-180" : ""
+                  }`}
                 />
               </button>
               {expandedStep === item.step && (
@@ -232,7 +230,12 @@ export const WalletQRCode: React.FC<WalletQRCodeProps> = ({
                     "Native Asset"
                   ) : (
                     <button
-                      onClick={() => void copyToClipboard(asset.issuer, `${asset.code} issuer`)}
+                      onClick={() =>
+                        void copyToClipboard(
+                          asset.issuer,
+                          `${asset.code} issuer`,
+                        )
+                      }
                       className="hover:text-accent transition-colors"
                     >
                       {truncateAddress(asset.issuer)}
@@ -246,14 +249,12 @@ export const WalletQRCode: React.FC<WalletQRCodeProps> = ({
         </div>
       </div>
 
-      {
-        employeeName && (
-          <div className="text-center text-sm text-muted">
-            Share this QR code with {employeeName} so they can receive payments
-            directly to their wallet.
-          </div>
-        )
-      }
-    </div >
+      {employeeName && (
+        <div className="text-center text-sm text-muted">
+          Share this QR code with {employeeName} so they can receive payments
+          directly to their wallet.
+        </div>
+      )}
+    </div>
   );
 };

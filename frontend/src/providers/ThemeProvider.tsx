@@ -23,9 +23,5 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   }, []);
 
-  return (
-    <ThemeContext value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext>
-  );
+  return <ThemeContext value={{ theme, toggleTheme }}>{children}</ThemeContext>;
 };

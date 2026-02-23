@@ -51,9 +51,7 @@ const ConnectAccount: React.FC = () => {
       ) : (
         <>
           {t("connectAccount.connect")}{" "}
-          <span className="hidden sm:inline">
-            {t("connectAccount.wallet")}
-          </span>
+          <span className="hidden sm:inline">{t("connectAccount.wallet")}</span>
         </>
       )}
     </button>

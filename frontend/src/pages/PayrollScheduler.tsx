@@ -39,11 +39,15 @@ const initialFormState: PayrollFormState = {
 export default function PayrollScheduler() {
   const { t } = useTranslation();
   const { notifySuccess, notifyError } = useNotification();
-  const { socket, subscribeToTransaction, unsubscribeFromTransaction } = useSocket();
+  const { socket, subscribeToTransaction, unsubscribeFromTransaction } =
+    useSocket();
   const [formData, setFormData] = useState<PayrollFormState>(initialFormState);
   const [isBroadcasting, setIsBroadcasting] = useState(false);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
-  const [activeSchedule, setActiveSchedule] = useState<{ frequency: string; timeOfDay: string } | null>(null);
+  const [activeSchedule, setActiveSchedule] = useState<{
+    frequency: string;
+    timeOfDay: string;
+  } | null>(null);
   const [nextRunDate, setNextRunDate] = useState<Date | null>(null);
 
   const [pendingClaims, setPendingClaims] = useState<PendingClaim[]>(() => {
@@ -79,15 +83,21 @@ export default function PayrollScheduler() {
     }
   }, [loadSavedData]);
 
-  const handleScheduleComplete = (config: { frequency: string; timeOfDay: string }) => {
+  const handleScheduleComplete = (config: {
+    frequency: string;
+    timeOfDay: string;
+  }) => {
     setActiveSchedule(config);
     setIsWizardOpen(false);
-    notifySuccess("Payroll schedule configured!", `Frequency: ${config.frequency}, time: ${config.timeOfDay}`);
+    notifySuccess(
+      "Payroll schedule configured!",
+      `Frequency: ${config.frequency}, time: ${config.timeOfDay}`,
+    );
 
     // Compute next run for countdown demo
     const d = new Date();
-    if (config.frequency === 'monthly') d.setMonth(d.getMonth() + 1);
-    else if (config.frequency === 'weekly') d.setDate(d.getDate() + 7);
+    if (config.frequency === "monthly") d.setMonth(d.getMonth() + 1);
+    else if (config.frequency === "weekly") d.setDate(d.getDate() + 7);
     else d.setDate(d.getDate() + 14);
 
     setNextRunDate(d);
@@ -106,25 +116,28 @@ export default function PayrollScheduler() {
   useEffect(() => {
     if (!socket) return;
 
-    const handleTransactionUpdate = (data: { transactionId: string; status: string }) => {
+    const handleTransactionUpdate = (data: {
+      transactionId: string;
+      status: string;
+    }) => {
       console.log("Received transaction update:", data);
       setPendingClaims((prev) =>
         prev.map((claim) =>
           claim.id === data.transactionId
             ? { ...claim, status: data.status }
-            : claim
-        )
+            : claim,
+        ),
       );
 
-      if (data.status === 'confirmed') {
+      if (data.status === "confirmed") {
         notifySuccess("Payment confirmed!", `TX: ${data.transactionId}`);
       }
     };
 
-    socket.on('transaction:update', handleTransactionUpdate);
+    socket.on("transaction:update", handleTransactionUpdate);
 
     return () => {
-      socket.off('transaction:update', handleTransactionUpdate);
+      socket.off("transaction:update", handleTransactionUpdate);
     };
   }, [socket, notifySuccess]);
 
@@ -132,7 +145,10 @@ export default function PayrollScheduler() {
     e.preventDefault();
 
     if (!formData.employeeName || !formData.amount) {
-      notifyError("Missing required fields", "Please provide employee name and amount.");
+      notifyError(
+        "Missing required fields",
+        "Please provide employee name and amount.",
+      );
       return;
     }
 
@@ -167,12 +183,18 @@ export default function PayrollScheduler() {
       // Subscribe to updates for this new claim
       subscribeToTransaction(newClaim.id);
 
-      notifySuccess("Broadcast successful!", `Claimable balance created for ${formData.employeeName}`);
+      notifySuccess(
+        "Broadcast successful!",
+        `Claimable balance created for ${formData.employeeName}`,
+      );
       resetSimulation();
       setFormData(initialFormState);
     } catch (err) {
       console.error(err);
-      notifyError("Broadcast failed", "Please check your network connection and try again.");
+      notifyError(
+        "Broadcast failed",
+        "Please check your network connection and try again.",
+      );
     } finally {
       setIsBroadcasting(false);
     }
@@ -205,7 +227,19 @@ export default function PayrollScheduler() {
             onClick={() => setIsWizardOpen(true)}
             className="bg-accent/10 border border-accent/30 text-accent font-bold px-4 py-2 rounded-lg text-sm hover:bg-accent/20 transition-colors flex items-center gap-2"
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
             Configure Automation
           </button>
         </div>
@@ -216,13 +250,35 @@ export default function PayrollScheduler() {
           <div className="absolute top-0 left-0 w-1 h-full bg-success"></div>
           <div>
             <h3 className="text-success font-black text-lg mb-1 flex items-center gap-2">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
               Automation Active
             </h3>
-            <p className="text-muted text-sm">Scheduled to run <span className="font-bold text-text capitalize">{activeSchedule.frequency}</span> at <span className="font-mono text-text">{activeSchedule.timeOfDay}</span></p>
+            <p className="text-muted text-sm">
+              Scheduled to run{" "}
+              <span className="font-bold text-text capitalize">
+                {activeSchedule.frequency}
+              </span>{" "}
+              at{" "}
+              <span className="font-mono text-text">
+                {activeSchedule.timeOfDay}
+              </span>
+            </p>
           </div>
           <div className="bg-bg border border-hi rounded-xl p-4 shadow-inner">
-            <span className="block text-[10px] uppercase font-bold text-muted mb-2 tracking-widest text-center">Next Scheduled Run</span>
+            <span className="block text-[10px] uppercase font-bold text-muted mb-2 tracking-widest text-center">
+              Next Scheduled Run
+            </span>
             <CountdownTimer targetDate={nextRunDate} />
           </div>
         </div>
