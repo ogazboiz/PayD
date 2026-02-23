@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import employeeController from '../controllers/employeeController';
+import { requireTenantContext } from '../middleware/tenantContext';
 
 const router = Router();
 
@@ -16,6 +17,7 @@ router.post('/', employeeController.createEmployee.bind(employeeController));
  */
 router.get(
   '/organizations/:organizationId',
+  requireTenantContext,
   employeeController.getAllEmployees.bind(employeeController)
 );
 
@@ -25,6 +27,7 @@ router.get(
  */
 router.get(
   '/organizations/:organizationId/:id',
+  requireTenantContext,
   employeeController.getEmployee.bind(employeeController)
 );
 
@@ -35,6 +38,7 @@ router.get(
  */
 router.put(
   '/organizations/:organizationId/:id',
+  requireTenantContext,
   employeeController.updateEmployee.bind(employeeController)
 );
 
@@ -44,6 +48,7 @@ router.put(
  */
 router.delete(
   '/organizations/:organizationId/:id',
+  requireTenantContext,
   employeeController.deleteEmployee.bind(employeeController)
 );
 

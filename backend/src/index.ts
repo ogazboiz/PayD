@@ -11,6 +11,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Logging middleware for tenant context (development only)
+if (config.NODE_ENV === 'development') {
+  app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} - Tenant: ${req.tenantId || 'none'}`);
+    next();
+  });
+}
+
 // Routes
 app.use('/api/search', searchRoutes);
 app.use('/api/employees', employeeRoutes);
