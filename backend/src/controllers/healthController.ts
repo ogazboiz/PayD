@@ -6,7 +6,7 @@ import { StellarService } from '../services/stellarService';
 
 const pool = new pg.Pool({ connectionString: config.DATABASE_URL });
 
-let redis: Redis | null = null;
+let redis: any | null = null;
 if (config.REDIS_URL) {
     redis = new Redis(config.REDIS_URL, {
         maxRetriesPerRequest: 1,
@@ -62,7 +62,7 @@ export class HealthController {
         // 3. Stellar Horizon Check
         try {
             const server = StellarService.getServer();
-            await server.root();
+            await server.feeStats();
             statusReport.dependencies.horizon.status = 'connected';
         } catch (error: any) {
             isHealthy = false;
